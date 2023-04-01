@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% load socialaccount %}
+
+{% block title %}33 My Life 登入{% endblock title %}
+
+{% block content %}
+
+    <h1 class="title">歡迎登入</h1>
+
+    <form method="post" action="">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="field">
+            <div class="control">
+                <button class="button is-dark is-uppercase">登入</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+        <div class="buttons">
+            <a class="button is-primary" href="{% provider_login_url 'line' %}?next={{ request.path }}">
+                <strong>Line 登入</strong>
+            </a>
+        </div>
+    <hr>
+{% endblock content %}

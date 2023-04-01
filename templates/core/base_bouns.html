@@ -1,0 +1,237 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {% block title %}33MYLIFE買來富-點數商品兌換商城-全國最強點數免費換禮品平台{% endblock title %} </title>
+    <link rel="stylesheet" href="https://bulma.io/css/bulma-docs.min.css?v=202301222245">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.w3cbus.com/library/mdui/1.0.2/css/mdui.min.css"/>
+
+</head>
+<body class="has-navbar-fixed-top">
+    <div class="container">
+        <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{% url 'ServiceWebsite:home' %}">
+                    <img src="https://live.staticflickr.com/65535/52611871506_17a827964a_k.jpg" width="160" height="40">
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    
+                    <a class="navbar-item" href="{% url 'ServiceWebsite_Shop:home' %}">現金商城</a>
+                    <a class="navbar-item" href="{% url 'ServiceWebsite_Shop:bouns_home' %}">點數商城</a>
+                    
+                    {% for category in categories_bouns %}
+                        <a class="navbar-item" href="{% url 'ServiceWebsite_Shop:category_bouns' category.slug %}">
+                            {{category.title}}
+                        </a>
+                    {% endfor %}
+                </div>
+
+                <div class="navbar-start">
+                    <div class="navbar-item">
+                        <form method="get" action="{% url 'ServiceWebsite_Shop:search_bouns' %}">
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input type="search" name="query" id="" class="input" placeholder="Search...">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-dark is-uppercase">蒐尋兌換商品</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+
+               
+                
+                    {% if not request.user.is_authenticated %}
+                    
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-light" href="{% url 'ServiceWebsite_Vendor:login' %}?next={{ request.path }}">
+                                登入
+                            </a>
+                        </div>
+                    </div>
+                    
+                {% elif social_accounts_extra_data and is_vendor_boss or social_accounts_extra_data and vendors %}
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link is-capitalized">
+                            <figure class="bd-tw-avatar"><img class="lazyload" src="{{social_accounts_extra_data.picture}}"></figure>
+                            {{social_accounts_extra_data.name}}
+                        </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Customer:customs' %}"> 個人頁面 </a>
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Vendor:vendor-admin' %}">
+                                進入店家後台
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Vendor:logout' %}">
+                                登出
+                            </a>
+                        </div>
+                    </div>
+
+                {% elif is_vendor_boss or vendors %}
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link is-capitalized">
+                            <span class="icon"><i class="fas fa-user"></i></span> {{user.username}} </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Customer:customs' %}"> 個人頁面 </a>
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Vendor:vendor-admin' %}">
+                                進入店家後台
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Vendor:logout' %}">
+                                登出
+                            </a>
+                        </div>
+                    </div>
+
+                {% elif social_accounts_extra_data %}
+                
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link is-capitalized">
+                            <figure class="bd-tw-avatar"><img class="lazyload" src="{{social_accounts_extra_data.picture}}"></figure>
+                            {{social_accounts_extra_data.name}}
+                        </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Customer:customs' %}"> 個人頁面 </a>
+                            
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Vendor:logout' %}">
+                                登出
+                            </a>
+                        </div>
+                    </div>
+
+                {% else %}
+                
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link is-capitalized">
+                            <span class="icon"><i class="fas fa-user"></i></span> {{user.username}} </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Customer:customs' %}"> 個人頁面 </a>
+                            
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{% url 'ServiceWebsite_Vendor:logout' %}">
+                                登出
+                            </a>
+                        </div>
+                    </div>
+
+                {% endif %}
+
+
+                </div>
+            </div>
+            <div >
+                <div  id="fab">
+                    <button class="mdui-btn mdui-btn-raised ">
+                        <a href="{% url 'ServiceWebsite_Shop:bouns_cart' %}" >點數兌換購物車 {% if cart_bouns %}({{cart_bouns|length}}){% endif %}</a>
+                    </button>
+                </div>
+            </div>
+            </nav>
+    </div>
+    
+    <section class="section">
+        
+        
+        
+        <div class="container">
+
+            {% block content %}{% endblock content %}
+
+        </div>
+    </section>
+
+    
+    <footer class="footer">
+        <div class="container">
+            <h3 class="is-size-4 mb-4">33MYLIFE買來富</h3>
+
+            <a href="{% url 'ServiceWebsite_Vendor:vendors' %}">商城所有店家</a>
+            <br>
+
+            {% if is_vendor_boss or vendors %}
+                <a href="{% url 'ServiceWebsite_Vendor:vendor-admin' %}">店家後台</a>
+            {% else %}
+                <a href="https://lin.ee/iAbhcKU">詢問如何申請成為合盟店家/LINE官方帳號</a><br>
+                <a href="https://lin.ee/iAbhcKU"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="加入好友" height="36" border="0"></a>
+            {% endif %}
+
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+        var $ = mdui.$;
+var inst = new mdui.Fab('#fab');
+
+// method
+$('#open').on('click', function () {
+  inst.open();
+});
+
+$('#close').on('click', function () {
+  inst.close();
+});
+
+$('#hide').on('click', function () {
+  inst.hide();
+});
+
+$('#show').on('click', function () {
+  inst.show();
+});
+
+$('#getState').on('click', function () {
+  mdui.alert(inst.getState());
+});
+
+// event
+$('#fab').on('open.mdui.fab', function () {
+  console.log('open');
+});
+
+$('#fab').on('opened.mdui.fab', function () {
+  console.log('opened');
+});
+
+$('#fab').on('close.mdui.fab', function () {
+  console.log('close');
+});
+
+$('#fab').on('closed.mdui.fab', function () {
+  console.log('closed');
+});
+    </script>
+
+
+    {% block scripts %}
+    {% endblock scripts %}
+
+</body>
+</html>

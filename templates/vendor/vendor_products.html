@@ -1,0 +1,80 @@
+<div class="box">
+
+    <h2 class="is-size-3 mb-4">商品管理</h2>
+
+    <a href="{% url 'ServiceWebsite_Vendor:add-product' %}" class="button is-dark is-uppercase mb-6">添加商品</a>
+
+    {% if products %}
+    
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>序號</th>
+                    <th>商品編號</th>
+                    <th>商品名稱</th>
+                    <th>價格</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{product.id}}</td>
+                        <!-- <td><a href="{% url 'ServiceWebsite_Shop:product' product.category.slug product.slug %}">{{ product.title }}</a></td> -->
+                        <td><a href="javascript:void(0)">{{ product.title }}</a></td>
+                        <td>${{ product.price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    {% else %}
+        <p class="has-text-danger">商品尚未添加成功</p>
+    {% endif %}
+
+</div>
+
+<nav class="pagination">
+    {% if page_obj.has_previous %}
+        <a class="pagination-previous" href="{% url 'ServiceWebsite_Vendor:vendor_product_list' %}?page={{page_obj.previous_page_number}}">前一頁</a>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+        <a class="pagination-next" href="{% url 'ServiceWebsite_Vendor:vendor_product_list' %}?page={{paginator.num_pages}}">下一頁</a>
+    {% endif %}
+
+    <ul class="pagination-list">
+        {% if left_has_more %}
+            <li>
+                <a class="pagination-link" href="{% url 'ServiceWebsite_Vendor:vendor_product_list' %}?page=1">1</a>
+            </li>
+            <li><span class="pagination-ellipsis">…</span></li>
+        {% endif %}
+
+        {% for left_page in left_pages %}
+            <li>
+                <a class="pagination-link" href="{% url 'ServiceWebsite_Vendor:vendor_product_list' %}?page={{left_page}}">{{left_page}}</a>
+            </li>
+        {% endfor %}
+
+        <li>
+            <a class="pagination-link is-current">{{page_obj.number}}</a>
+        </li>
+
+        {% for right_page in right_pages %}
+            <li>
+                <a class="pagination-link" href="{% url 'ServiceWebsite_Vendor:vendor_product_list' %}?page={{right_page}}">{{right_page}}</a>
+            </li>
+        {% endfor %}
+
+        {% if right_has_more %}
+            <li><span class="pagination-ellipsis">…</span></li>
+            <li>
+                <a class="pagination-link" href="{% url 'ServiceWebsite_Vendor:vendor_product_list' %}?page={{pagrnator.num_pages}}">{{paginator.num_pages}}</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>          
+

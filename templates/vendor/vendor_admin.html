@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Vendor Admin{% endblock title %}
+
+{% block content %}
+
+    <h1 class="title">店家後台 - <span class="is-capitalized">{{vendor.name}}</span></h1>
+
+    <hr>
+    <div class="columns is-multiline mb-6">
+        <div class="column is-5">
+            <div class="box">
+                <h3 class="title is-4">未完成付款訂單總額: </h3> <h3 class="subtitle is-4" style="padding-left: 2em;">$ {{vendor.get_balance}} </h3>
+            </div>
+        </div>
+        <div class="column is-5">
+            <div class="box">
+                <h3 class="title is-4">已完成付款訂單總額: </h3> <h3 class="subtitle is-4" style="padding-left: 2em;">$ {{vendor.get_paid_amount}} </h3>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="columns is-multiline mb-6">
+        <div class="column is-5">
+            <div class="box">
+                <h3 class="title is-4">未完成交易點數總額: </h3> <h3 class="subtitle is-4" style="padding-left: 2em;">P {{vendor.get_exchange_balance}} </h3>
+            </div>
+        </div>
+        <div class="column is-5">
+            <div class="box">
+                <h3 class="title is-4">已完成交易點數總額: </h3> <h3 class="subtitle is-4" style="padding-left: 2em;">P {{vendor.get_exchange_amount}} </h3>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="columns">
+        {% if vendor.level == 'A' %}
+            <div style="padding: 20px; height: 80px;">
+                <a href="{% url 'ServiceWebsite_Vendor:vendor_product_list' %}" class="button is-dark is-uppercase mb-6"><h2 class="is-size-4">商品管理</h2></a>
+            </div>
+
+            <div style="padding: 20px; height: 80px;">
+                <a href="{% url 'ServiceWebsite_Vendor:vendor_order_list' %}" class="button is-dark is-uppercase mb-6"><h2 class="is-size-4">現金消費訂單管理</h2></a>
+            </div>
+        {% endif %}
+        <div style="padding: 20px; height: 80px;">
+            <a href="{% url 'ServiceWebsite_Vendor:vendor_bounsorder_list' %}" class="button is-dark is-uppercase mb-6"><h2 class="is-size-4">點數兌換訂單管理</h2></a>
+        </div>
+    </div>
+
+    {% if orders %}
+        {% include 'vendor/vendor_order.html' %}
+    {% elif products %}
+        {% include 'vendor/vendor_products.html' %}
+    {% elif bounsorders %}
+        {% include 'vendor/vendor_bounsorder.html' %}
+    {% endif %}
+
+
+{% endblock content %}

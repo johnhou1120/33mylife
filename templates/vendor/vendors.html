@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}店家Vendors{% endblock title %}
+
+
+{% block content %}
+
+    <h1 class="title">所有店家</h1>
+
+    <div class="columns is-multiline">
+        {% for vendor in vendors %}
+        
+            <div class="column is-3">
+                <div class="box">
+                    <h2 class="subtitle">
+                        {{ vendor.name }}
+                    </h2>
+                    <hr>
+
+                    <a href="{% url 'ServiceWebsite_Vendor:vendor' vendor.id %}" class="button is-primary ">挑選商品</a>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock content %}

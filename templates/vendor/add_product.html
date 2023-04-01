@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block title %}添加商品{% endblock title %}
+
+{% block content %}
+
+    <h1 class="title">添加商品</h1>
+
+    <form method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="field">
+            <div class="control">
+                <button class="button is-dark is-uppercase">增加商品</button>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

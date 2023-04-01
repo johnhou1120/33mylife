@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <title>店家註冊通知信</title>
+
+        <style type="text/css">
+            html {
+                width: 100%;
+            }
+
+            body {
+                width: 100%;
+                font-family: Arial;
+                font-size: 14px;
+                background-color: #fff;
+                color: #333;
+            }
+        </style>
+    </head>
+
+    <body>
+        <table width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td><h1>新訂單</h1></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h3>購買者</h3>
+
+                    <b>名字:</b> {{ order.first_name }} {{ order.last_name }}<br>
+                    <b>地址:</b> {{ order.address }}<br>
+                    <b>郵遞區號與場所:</b> {{ order.zipcode }} {{ order.place }}<br>
+                    <b>E-mail:</b> {{ order.email }}<br>
+                    <b>手機:</b> {{ order.phone }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <h3>購買的商品</h3>
+
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td><b>商品名稱</b></td>
+                            <td><b>價格</b></td>
+                            <td><b>購買數量</b></td>
+                            <td><b>總金額</b></td>
+                        </tr>
+                        
+                        {% for item in order.items.all %}
+                            {% if item.vendor == vendor %}
+                                <tr>
+                                    <td>{{ item.product.title }}</td>
+                                    <td>${{ item.product.price }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>${{ item.get_total_price }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

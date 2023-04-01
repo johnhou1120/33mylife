@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit vendor | {% endblock %}
+
+{% block content %}
+    <h1 class="title">編輯店家</h1>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+
+        <div class="field">
+            <label>店家名稱</label>
+
+            <div class="control">
+                <input type="text" name="name" id="id_name" value="{{ vendor.name }}" class="input">
+            </div>
+
+            <p class="help">這個名稱已被使用</p>
+        </div>
+
+        <div class="field">
+            <label>E-mail</label>
+
+            <div class="control">
+                <input type="email" name="email" id="id_email" value="{{ vendor.created_by.email }}" class="input">
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <button class="button is-dark is-uppercase">儲存編輯</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

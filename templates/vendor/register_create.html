@@ -1,0 +1,22 @@
+
+{% extends 'core/base.html' %}
+
+{% block title %}店家登入{% endblock title %}
+
+{% block content %}
+
+    <h1 class="title">使用者申請帳號</h1>
+
+    <form method="post" action="">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="field">
+            <div class="control">
+                
+                <button class="button is-dark is-uppercase">送出</button>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

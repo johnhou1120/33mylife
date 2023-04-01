@@ -1,0 +1,138 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Vendor Admin{% endblock title %}
+
+{% block content %}
+
+    <h1 class="title">歡迎光臨 - 
+        <span class="is-capitalized">{{vendor.name}}
+            {% if social_accounts_extra_data %}
+                {{ social_accounts_extra_data.name }}
+            {% else %}
+                {{ user.username }}
+            {% endif %}
+        </span>
+    </h1>
+    <hr>
+
+    <div class="columns is-multiline mb-6">
+        <div class="column is-5">
+            <div class="box">
+                <h3 class="title is-4">紅利點數餘額: </h3> <h3 class="subtitle is-4" style="padding-left: 2em;">P {{total_bouns}}</h3>
+            </div>
+        </div>
+        <div class="column is-5">
+            <div class="box">
+                <h3 class="title is-4">可用紅利點數餘額: </h3> <h3 class="subtitle is-4" style="padding-left: 2em;">P {{balance_bouns}} </h3>
+            </div>
+        </div>
+    </div>
+    <hr>
+    
+    <div class="columns">
+        <div style="padding: 20px; height: 80px;">
+            <a href="{% url 'ServiceWebsite_Customer:customs_orderlist' 'cash' %}" class="button is-dark is-uppercase mb-6"><h2 class="is-size-4">查看最新紅利點數訂單</h2></a>
+        </div>
+        <div style="padding: 20px; height: 80px;">
+            <a href="{% url 'ServiceWebsite_Customer:customs_orderlist' 'bouns' %}" class="button is-dark is-uppercase mb-6"><h2 class="is-size-4">查看最新點數消費訂單</h2></a>
+        </div>
+    </div>
+    
+
+    {% if orders_cash %}
+
+        <div class="box">
+            <h2 class="is-size-3 mb-4">我的紅利點數訂單</h2>
+
+                {% for order in orders_cash %}
+                    <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
+                        <div class="columns is-multiline">
+                            <div class="column is-6">
+                                <h3 class="is-size-4">#{{ order.id }}</h3>
+                            </div>
+        
+                            <div class="column is-12">
+                                <table class="table is-fullwidth mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th>訂單時間</th>
+                                            <th>商品</th>
+                                            <th>價格</th>
+                                            <th>數量</th>
+                                            <th>總金額</th>
+                                            <th>紅利點數</th>
+                                            <th>付款與否</th>
+                                        </tr>
+                                    </thead>
+        
+                                    <tbody>
+                                        {% for item in order.OrderItem.all %}
+                                            <tr>
+                                                <td>{{ item.order.created_at }}</td>
+                                                <td>{{ item.product.title }}</td>
+                                                <td>${{ item.product.price }}</td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>${{ item.t_price }}</td>
+                                                <td>{{ item.bouns_points}}</td>
+                                                <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+        </div>
+    
+    {% elif orders_bouns %}
+
+        <div class="box">
+            <h2 class="is-size-3 mb-4">我的點數消費訂單</h2>
+
+                {% for order in orders_bouns %}
+                    <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
+                        <div class="columns is-multiline">
+                            <div class="column is-6">
+                                <h3 class="is-size-4">#{{ order.id }}</h3>
+                            </div>
+        
+                            <div class="column is-12">
+                                <table class="table is-fullwidth mt-4">
+                                    <thead>
+                                        <tr>
+                                        <th>訂單時間</th>
+                                        <th>商品</th>
+                                        <th>點數</th>
+                                        <th>數量</th>
+                                        <th>總點數</th>
+                                        <th></th>
+                                        <th>取貨</th>
+                                    </tr>
+                                    </thead>
+        
+                                    <tbody>
+                                        {% for item in order.OrderItem_Bouns.all %}
+                                            <tr>
+                                                <td>{{ item.order.created_at }}</td>
+                                                <td>{{ item.product.title }}</td>
+                                                <td>P{{ item.product.bouns_request }}</td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>P{{ item.t_bouns }}</td>
+                                                <td></td>
+                                                <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endblock content %}
